@@ -37,11 +37,12 @@ def get_prefix(client, message):
 
 #configs
 whitelist = []
+intents = discord.Intents.default()
+intents.members = True
+intents.presences = False
+intents.message_content = True
 logs_channel = None
-uwu = commands.Bot(
-    command_prefix=when_mentioned_or_function(get_prefix),
-    intents = discord.Intents.all()
-    )
+uwu = commands.Bot(command_prefix=when_mentioned_or_function(get_prefix), intents = intents)
 tree = uwu.tree
 uwu.remove_command("help")
 
