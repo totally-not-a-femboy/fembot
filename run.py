@@ -306,12 +306,6 @@ async def impersonate(interaction: discord.Interaction, member: discord.Member, 
     if member == interaction.user:
         await interaction.response.send_message('You can\'t impersonate yourself', ephemeral=True)
         return
-    if member.id == 915329928390639648:
-        await interaction.response.send_message('You can\'t impersonate my developer', ephemeral=True)
-        return
-    if member.id == 929474924366659695:
-        await interaction.response.send_message('You can\'t impersonate my developer', ephemeral=True)
-        return
     else:
         if "@everyone" in message:
             await interaction.response.send_message('Hey!, you cannot do these', ephemeral=True)
