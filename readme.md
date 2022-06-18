@@ -1,6 +1,6 @@
 # Fembot
 
-Just another discord bot
+A very bad discord bot made with discord.py v2
 
     
 ## Use an existing one
