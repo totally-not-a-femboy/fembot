@@ -1,9 +1,6 @@
-import datetime
-from distutils.command.config import config
 import io
 import json
 import random
-import secrets
 from typing import Optional
 import aiohttp
 import discord
@@ -15,6 +12,7 @@ from discord.app_commands import Choice
 from dotenv import load_dotenv
 
 load_dotenv()
+TOKEN = os.getenv("TOKEN")
 async def load_extensions():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -38,7 +36,6 @@ def get_prefix(client, message):
     return prefixes.get(str(message.guild.id))
 
 #configs
-TOKEN = os.getenv("TOKEN")
 whitelist = []
 logs_channel = None
 uwu = commands.Bot(
