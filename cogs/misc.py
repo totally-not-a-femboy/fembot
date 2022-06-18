@@ -2,6 +2,7 @@ import asyncio
 import io
 import json
 from select import select
+import requests
 import discord
 import aiohttp
 from discord.ext import commands
@@ -46,6 +47,15 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
     item = discord.ui.Button(style=style, label="Add Fembot", url="https://galactiko.net/invite")  
     view.add_item(item=item)  
     embed = discord.Embed(title="", description="As of August 30, prefix commands will no longer work; use slash commands instead, type '/' to see a list of available commands, if you can't see any try re-inviting me", color=discord.Color.red())
+
+    @commands.command(name="shorten", aliases=["shorturl"])
+    async def shorten(self, ctx, *, url):
+        """Shorten a URL."""
+        myobj = {'url': url}
+        x = requests.post("https://galactiko.net/api/redirects", json = myobj)
+        catjson = await x.json() 
+        shurl = catjson['key']
+        await ctx.send(f"{url} shortened to {shurl}")
 
     @commands.command(name='say', help='Envía un mensaje a través del bot')
     @commands.has_permissions(manage_messages=True)
