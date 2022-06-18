@@ -55,7 +55,8 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
         x = requests.post("https://galactiko.net/api/redirects", json = myobj)
         catjson = await x.json() 
         shurl = catjson['key']
-        await ctx.send(f"{url} shortened to {shurl}")
+        embed = discord.Embed(title="URL shortened", description=f"{url} has been shortened to {shurl}", color=discord.Color.purple())
+        await ctx.send(embed=embed)
 
     @commands.command(name='say', help='Envía un mensaje a través del bot')
     @commands.has_permissions(manage_messages=True)
