@@ -74,9 +74,7 @@ async def error_handler(interaction: discord.Interaction, error: discord.app_com
 #bot events
 
 async def presence():
-    u = len(uwu.commands)
-    a = len(uwu.tree.get_commands())
-    c = u+a 
+    c = len(uwu.commands) + len(uwu.tree.get_commands())
     names = [f"{c} commands", f"{len(uwu.guilds)} servers", "/help", "galactiko.net"]
     counter = 0
     while True:
