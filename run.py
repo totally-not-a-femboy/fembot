@@ -39,7 +39,7 @@ def get_prefix(client, message):
 
 #configs
 TOKEN = os.getenv("TOKEN")
-whitelist = [915329928390639648, 947294593764978719]
+whitelist = []
 logs_channel = None
 uwu = commands.Bot(
     command_prefix=when_mentioned_or_function(get_prefix),
