@@ -10,7 +10,7 @@ A bad discord bot made with discord.py 2.0
 
 First, you need to create a bot token in the [Discord Developer Portal.](https://discordapp.com/developers/applications/me)
 
-ensure you activate the message and members intents in the developer portal.
+Ensure to activate the message and members intents in the developer portal.
 [![img](https://cdn.discordapp.com/attachments/969632808920305704/987877147253284934/unknown.png)](#)
 
 
