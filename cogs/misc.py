@@ -49,8 +49,11 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
     embed = discord.Embed(title="", description="As of August 30, prefix commands will no longer work; use slash commands instead, type '/' to see a list of available commands, if you can't see any try re-inviting me", color=discord.Color.red())
 
     @commands.command(name="shorten", aliases=["shorturl"])
-    async def shorten(self, ctx, *, url):
+    async def shorten(self, ctx, url= None):
         """Shorten a URL."""
+        if url is None:
+            await ctx.send("Please provide a URL to shorten.")
+            return
         myobj = {'url': url}
         x = requests.post("https://galactiko.net/api/redirects", json = myobj)
         catjson = await x.json() 
