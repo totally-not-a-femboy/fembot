@@ -92,10 +92,12 @@ async def on_ready():
 
 @uwu.event
 async def on_guild_join(guild: discord.Guild):
+    default_prefix = os.getenv("default_prefix")
+    prefix = default_prefix or ">"
     with open('prefixes.json', 'r') as f: 
         prefixes = json.load(f) 
 
-    prefixes[str(guild.id)] = '>'
+    prefixes[str(guild.id)] = prefix
 
     with open('prefixes.json', 'w') as f: 
         json.dump(prefixes, f, indent=4) 
