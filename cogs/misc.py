@@ -65,8 +65,27 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
     @commands.has_permissions(manage_messages=True)
     async def say(self, ctx: commands.Context, message=None):
         autor=ctx.message.author
-        await ctx.send(f"{message} \n\n Enviado por:{autor}")
-        await ctx.message.delete()
+        if message is None:
+            await ctx.send("Please provide a message to send.")
+            return
+        if "http" in message:
+            await ctx.send("Please do not include a URL in your message.")
+            return
+        if "@everyone" in message:
+            await ctx.send("Please do not include @everyone in your message.")
+            return
+        if "@here" in message:
+            await ctx.send("Please do not include @here in your message.")
+            return
+        if "discord.gg" in message:
+            await ctx.send("Please do not include a discord.gg link in your message.")
+            return
+        if "discordapp.com/invite" in message:
+            await ctx.send("Please do not include a discordapp.com/invite link in your message.")
+            return
+        else:
+            await ctx.send(f"{message} \n\n Enviado por:{autor}")
+            await ctx.message.delete()
 
     @commands.command()
     @commands.has_permissions(administrator=True)
