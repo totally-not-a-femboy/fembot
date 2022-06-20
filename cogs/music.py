@@ -42,9 +42,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.requester = requester
         self.title = data.get("title")
         self.web_url = data.get("webpage_url")
-        self.thumbnail = data.get('thumbnail')
-        self.webpage_url = data.get('webpage_url')
-        self.uploader = data.get('uploader')
 
     def __getitem__(self, item: str):
         return self.__getattribute__(item)
@@ -169,10 +166,9 @@ class MusicPlayer:
                 after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set),
             )
 
-            embed=discord.Embed(title=f"", description=f"[{source.title}]({source.web_url}) - {source.uploader}", color=0x00ff00)
+            embed=discord.Embed(title=f"", description=f"[{source.title}]({source.web_url})", color=0x00ff00)
             embed.set_author(name=f"Ahora suena", icon_url=f"https://c.tenor.com/B-pEg3SWo7kAAAAC/disk.gif")
             embed.set_footer(text=f"Requested by: {source.requester.name}")
-            embed.set_thumbnail(url=source.thumbnail)
             self.np = await self._channel.send(embed=embed)
 
             await self.next.wait()
@@ -284,7 +280,7 @@ class music(commands.GroupCog):
                 channel = ctx.author.voice.channel
             except AttributeError:
                 error_msg = (
-                    f":x: No channel to join. Specify a channel or join one yourself."
+                    f":x: No hay canal para unirse. Especifique un canal o únase a uno usted mismo."
                 )
 
                 await ctx.reply(error_msg, delete_after=20)
@@ -299,22 +295,22 @@ class music(commands.GroupCog):
                 await vc.move_to(channel)
             except asyncio.TimeoutError:
                 raise VCError(
-                    f":x: Moving to channel **{channel}** timed out.",
+                    f":x: Se agotó el tiempo de espera para moverse al canal **{channel}**.",
                 )
         else:
             try:
                 await channel.connect()
             except asyncio.TimeoutError:
-                raise VCError(f":x: Connecting to channel **{channel}** timed out.")
+                raise VCError(f":x: Se agotó el tiempo de conexión al canal **{channel}**..")
 
         embed = discord.Embed(
-            title=f"🎧 Successfully Connected", description=f"```🎶 Channel: {channel}```"
+            title=f"🎧 Conectado con éxito", description=f"```🎶 Canal: {channel}```"
         )
-        embed.set_footer(text="❓ You can use ~del to kick me at any time.")
+        embed.set_footer(text="❓ Puedes usar /stop para patearme en cualquier momento.")
         await ctx.send(embed=embed)
 
     @commands.hybrid_command(name="play", aliases=["p"])
-    async def play(self, ctx: commands.Context, *, search: str = None):
+    async def play(self, ctx: commands.Context, search: str):
         """
         🎵 Plays a song in a voice channel.
         Usage:
@@ -325,7 +321,7 @@ class music(commands.GroupCog):
         async with ctx.typing():
             if not search:
                 return await ctx.reply(
-                    f":x: You need to specify a song to search for.",
+                    f":x: Debe especificar una canción para buscar.",
                     delete_after=20,
                 )
 
@@ -354,7 +350,7 @@ class music(commands.GroupCog):
 
         if not vc or not vc.is_playing():
             return await ctx.reply(
-                f":x: I'm not currently playing anything.",
+                f":x: Actualmente no estoy reproduciendo nada.",
                 delete_after=20,
             )
         elif vc.is_paused():
@@ -363,8 +359,8 @@ class music(commands.GroupCog):
         vc.pause()
 
         embed = discord.Embed(
-            title=f"🎧 Paused the Song",
-            description=f"⏸️ Paused by **{ctx.author.name}**",
+            title=f"🎧 Pausé la canción",
+            description=f"⏸️ Pausada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
 
@@ -381,7 +377,7 @@ class music(commands.GroupCog):
 
         if not vc or not vc.is_connected():
             return await ctx.reply(
-                f":x: I'm not currently playing anything.",
+                f":x: Actualmente no estoy reproduciendo nada.",
                 delete_after=20,
             )
 
@@ -391,8 +387,8 @@ class music(commands.GroupCog):
         vc.resume()
 
         embed = discord.Embed(
-            title=f"🎧 Resumed the Song",
-            description=f"▶️ Resumed by **{ctx.author.name}**",
+            title=f"🎧 Reanudé la canción",
+            description=f"▶️ Reanudada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
 
@@ -409,7 +405,7 @@ class music(commands.GroupCog):
 
         if not vc or not vc.is_connected():
             return await ctx.reply(
-                f":x: I'm not currently playing anything.",
+                f":x: Actualmente no estoy reproduciendo nada.",
                 delete_after=20,
             )
 
@@ -421,8 +417,8 @@ class music(commands.GroupCog):
         vc.stop()
 
         embed = discord.Embed(
-            title=f"🎧 Skipped the Song",
-            description=f"⏭️ Skipped by **{ctx.author.name}**",
+            title=f"🎧  Salté la canción",
+            description=f"⏭️ Saltada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
 
@@ -438,12 +434,12 @@ class music(commands.GroupCog):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.reply(f":x: I'm not connected to VC.", delete_after=20)
+            return await ctx.reply(f":x: No estoy conectado a VC.", delete_after=20)
 
         player = self.get_player(ctx)
         if player.queue.empty():
             return await ctx.reply(
-                f":x: There are no more queued songs.",
+                f":x: No hay más canciones en cola.",
                 delete_after=20,
             )
 
@@ -454,11 +450,11 @@ class music(commands.GroupCog):
             f'➡️ **{i + 1}**: {song["title"]}' for i, song in enumerate(upcoming)
         )
         embed = discord.Embed(
-            title=f"🎧 Music Queue | {len(upcoming)} Songs",
+            title=f"🎧 Lista de reproducción | {len(upcoming)} Songs",
             description=fmt,
         )
 
-        embed.set_footer(text=f"❓ You can use ~skip to skip to the song at the top.")
+        embed.set_footer(text=f"❓ Puede usar /skip para saltar a la canción en la parte superior.")
         await ctx.send(embed=embed)
 
     @commands.hybrid_command(name="nowplaying",aliases=["np"])
@@ -474,14 +470,14 @@ class music(commands.GroupCog):
 
         if not vc or not vc.is_connected():
             return await ctx.reply(
-                f":x: I'm not currently playing anything.",
+                f":x: Actualmente no estoy reproduciendo nada.",
                 delete_after=20,
             )
 
         player = self.get_player(ctx)
         if not player.current:
             return await ctx.reply(
-                f":x: I'm not currently playing anything.",
+                f":x: Actualmente no estoy reproduciendo nada.",
                 delete_after=20,
             )
 
@@ -491,10 +487,10 @@ class music(commands.GroupCog):
         except discord.HTTPException:
             pass
 
-        embed = discord.Embed(
-            title=f"🎧 **Now Playing:** *{vc.source.title}*",
-            description=f"🎵 Requested by: **{vc.source.requester.name}**",
-        )
+
+        embed=discord.Embed(title=f"", description=f"[{vc.source.title}]({vc.source.web_url})", color=0x00ff00)
+        embed.set_author(name=f"Ahora suena", icon_url=f"https://c.tenor.com/B-pEg3SWo7kAAAAC/disk.gif")
+        embed.set_footer(text=f"Requested by: {vc.source.requester.name}")
 
         player.np = await ctx.send(embed=embed)
 
@@ -510,11 +506,11 @@ class music(commands.GroupCog):
         vc: discord.VoiceProtocol = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.reply(f":x: I'm not connected to VC.", delete_after=20)
+            return await ctx.reply(f":x: No estoy conectado a VC.", delete_after=20)
 
         if not 0 < vol < 101:
             return await ctx.reply(
-                f":x: I can only set the volume between 1 and 100.",
+                f":x: Solo puedo configurar el volumen entre 1 y 100.",
                 delete_after=20,
             )
 
@@ -526,8 +522,8 @@ class music(commands.GroupCog):
         player.volume = vol / 100
 
         embed = discord.Embed(
-            title="🎧 Volume Changed",
-            description=f"🔊 **{ctx.author.name}**: Set the volume to *{vol}%*",
+            title="🎧 Volumen cambiado",
+            description=f"🔊 **{ctx.author.name}**: Ajustó el volumen a  *{vol}%*",
         )
         await ctx.send(embed=embed)
 
@@ -549,7 +545,7 @@ class music(commands.GroupCog):
             )
 
         await self.cleanup(ctx.guild)
-
+        await ctx.send(f":x: **{ctx.author.name}**, se ha detenido la música.")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(music(bot))
