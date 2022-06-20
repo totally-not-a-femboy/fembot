@@ -119,7 +119,6 @@ async def on_guild_remove(guild):
 #Message listeners
 @uwu.listen()
 async def on_message(message):
-
     await AntiScam(message, bot = uwu, whitelist = whitelist, muted_role='Muted', logs_channel=logs_channel)
 
 @uwu.event
