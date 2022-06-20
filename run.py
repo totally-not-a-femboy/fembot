@@ -103,7 +103,7 @@ async def on_guild_join(guild: discord.Guild):
         json.dump(prefixes, f, indent=4) 
 
     channel = random.choice(guild.text_channels) 
-    embed = discord.Embed(title=f"Gracias por agregar {uwu.user.name} a su servidor", description=f"Mi prefijo predeterminado es `>`, puedes cambiarlo usando `>setprefix <nuevo prefijo>`", color=0x00ff00)
+    embed = discord.Embed(title=f"Gracias por agregar {uwu.user.name} a su servidor", description=f"Mi prefijo predeterminado es {prefix}, puedes cambiarlo usando `{prefix}setprefix <nuevo prefijo>`", color=0x00ff00)
     await channel.send(embed=embed)
 
 @uwu.event
