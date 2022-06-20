@@ -62,7 +62,6 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
         await ctx.send(embed=embed)
 
     @commands.command(name='say', help='Envía un mensaje a través del bot')
-    @commands.has_permissions(manage_messages=True)
     async def say(self, ctx: commands.Context, message=None):
         autor=ctx.message.author
         if message is None:
