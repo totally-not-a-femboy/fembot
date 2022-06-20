@@ -327,7 +327,7 @@ async def help(interaction: discord.Interaction):
     embed = discord.Embed(title="Ayuda", description="Selecciiona una categoría para ver los comandos <:pan:970052408350769232>")
     await interaction.response.send_message(embed=embed, view=SelectView(), ephemeral=True)
 
-@tree.command(name="add", description="Add fembot to your server")
+@tree.command(name="add", description=f"Add me to your server")
 async def add(interaction: discord.Interaction):
     embed = discord.Embed(title="Invitame a tu servidor!", color=discord.Color.purple()) 
     embed.set_image(url='https://affectionate-hawking-8dcfae.netlify.app/937411863388512276.gif') 
@@ -346,20 +346,8 @@ async def add(interaction: discord.Interaction):
 async def snipe(interaction: discord.Interaction, edited: Optional[Choice[int]] = None):
     await interaction.response.defer(thinking=True)
     await asyncio.sleep(0.5)
-    if edited is None:
-        try:
-            contents, author, channel_name, time = uwu.sniped_messages[interaction.channel.id]
-        except:
-                await interaction.followup.send("No hay mensajes borrados recientemente")
-                return
-        embed = discord.Embed(description=contents,
-                                color=interaction.user.color,
-                                timestamp=time)
-        embed.set_author(name=f"{author.name}#{author.discriminator}", icon_url=author.avatar.url)
-        embed.set_footer(text=f"Eliminado en #{channel_name}")
-        
-        await interaction.followup.send(embed=embed)
-    if edited.value == 2:
+    value = edited.value or 2
+    if value == 2:
 
         try:
             contents, author, channel_name, time = uwu.sniped_messages[interaction.channel.id]
@@ -374,7 +362,7 @@ async def snipe(interaction: discord.Interaction, edited: Optional[Choice[int]] 
         
         await interaction.followup.send(embed=embed)
 
-    if edited.value == 1:
+    if value == 1:
         try:
             contents, author, channel_name, time, e, url = uwu.esniped_messages[interaction.channel.id]
         except:
