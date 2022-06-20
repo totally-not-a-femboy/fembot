@@ -268,18 +268,6 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
                 await session.close()
                 await ctx.send(embed=self.embed, view=self.view)
 
-    @commands.command(name='catfact', help='Envía un dato random de los gatos')
-    async def catfact(self, ctx: commands.Context):
-     async with aiohttp.ClientSession() as session:
-        async with session.get("https://catfact.ninja/fact") as response:
-            fact = (await response.json())["fact"]
-            length = (await response.json())["length"]
-            embed = discord.Embed(title=f'Random Cat Fact Number: **{length}**', description=f'Cat Fact: {fact}', colour=0x400080)
-            embed.set_footer(text="")
-            await ctx.send(embed=embed)
-            await ctx.send(embed=self.embed, view=self.view)
-
-    
     class ViewWithButton(discord.ui.View):
         @discord.ui.button(style=discord.ButtonStyle.blurple, label='Another meme')
         async def click_me_button(self, interaction: discord.Interaction, button: discord.ui.Button):
