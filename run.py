@@ -72,8 +72,7 @@ async def error_handler(interaction: discord.Interaction, error: discord.app_com
 #bot events
 
 async def presence():
-    c = len(uwu.commands) + len(uwu.tree.get_commands())
-    names = [f"{c} commands", f"{len(uwu.guilds)} servers", "/help", "galactiko.net"]
+    names = [f"{len(uwu.guilds)} servers", "/help", "galactiko.net"]
     counter = 0
     while True:
         for index, item in enumerate(names):
@@ -129,8 +128,6 @@ async def on_message(message: discord.Message):
          prefixes = json.load(f)
         prefix = prefixes.get(str(message.guild.id))
         await message.channel.send(f"Mi prefix en este servidor es `{prefix}` \n Escribe `{prefix}help` para ver los comandos")
-    if "cato" in message.content:
-        await message.add_reaction("<:gatoregalo:970051310424588309>")
 
 uwu.sniped_messages = {}
 @uwu.event
@@ -196,8 +193,6 @@ class Select(discord.ui.Select):
         elif self.values[0] == "Configuración":
             await interaction.response.edit_message(embed=configuracion)
 
-
-
 class SelectView(discord.ui.View):
     def __init__(self, *, timeout = 180):
         super().__init__(timeout=timeout)
@@ -222,66 +217,6 @@ async def horny(interaction: discord.Interaction, user: discord.Member):
                     await interaction.response.send_message(embed=em, file=file)
                 else:
                     await interaction.response.send_message('No horny :(')
-            await session.close()
-
-@tree.context_menu(name="Simp")
-async def simp(interaction: discord.Interaction, user: discord.Member ):
-    member = user
-    async with aiohttp.ClientSession() as session:
-            async with session.get(
-            f'https://some-random-api.ml/canvas/simpcard?avatar={member.avatar.url.format("png")}'
-            ) as af:
-                if 300 > af.status >= 200:
-                    fp = io.BytesIO(await af.read())
-                    file = discord.File(fp, "simpcard.png")
-                    em = discord.Embed(
-                        title="Simp!",
-                        color=0xf1f1f1,
-                    )
-                    em.set_image(url="attachment://simpcard.png")
-                    await interaction.response.send_message(embed=em, file=file)
-                else:
-                    await interaction.response.send_message('Simp')
-            await session.close()
-
-@tree.context_menu(name="Jail")
-async def jail(interaction: discord.Interaction, user: discord.Member):
-    member = user
-    async with aiohttp.ClientSession() as session:
-            async with session.get(
-            f'https://some-random-api.ml/canvas/jail?avatar={member.avatar.url.format("png")}'
-            ) as af:
-                if 300 > af.status >= 200:
-                    fp = io.BytesIO(await af.read())
-                    file = discord.File(fp, "jail.png")
-                    em = discord.Embed(
-                        title="lo agarraron los municipales :c",
-                        color=0xf1f1f1,
-                    )
-                    em.set_image(url="attachment://jail.png")
-                    await interaction.response.send_message(embed=em, file=file)
-                else:
-                    await interaction.response.send_message('Something went wrong')      
-            await session.close()
-
-@tree.context_menu(name="Gay")
-async def gay(interaction: discord.Interaction, user: discord.Member):
-    member = user
-    async with aiohttp.ClientSession() as session:
-            async with session.get(
-            f'https://some-random-api.ml/canvas/gay?avatar={member.avatar.url.format("png")}'
-        ) as af:
-                if 300 > af.status >= 200:
-                    fp = io.BytesIO(await af.read())
-                    file = discord.File(fp, "gay.png")
-                    em = discord.Embed(
-                    title="gei",
-                    color=0xf1f1f1,
-                    )
-                    em.set_image(url="attachment://gay.png")
-                    await interaction.response.send_message(embed=em, file=file)
-                else:
-                    await interaction.response.send_message('gei')
             await session.close()
 
 def cooldown_for_everyone_but_me(interaction: discord.Interaction) -> Optional[discord.app_commands.Cooldown]:
