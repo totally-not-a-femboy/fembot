@@ -13,7 +13,7 @@ class nsfw(app_commands.Group):
         Returns:
             imgs [list]: List of image URLs
         """
-        url = 'https://rule34.xxx/index.php?page=post&s=list&tags={query}' % query
+        url = f'https://rule34.xxx/index.php?page=post&s=list&tags={query}'
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'lxml')
         divs = soup.find_all('span', class_='thumb')
