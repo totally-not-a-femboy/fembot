@@ -9,7 +9,6 @@ import asyncio
 
 
 class mods(commands.Cog):  # All cogs must inherit from commands.Cog
-    """A simple, basic cog."""
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
