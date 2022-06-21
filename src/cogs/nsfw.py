@@ -4,8 +4,7 @@ import discord
 import requests
 import aiohttp
 from bs4 import BeautifulSoup
-class nsfw(app_commands.Group):  # All cogs must inherit from commands.Cog
-    """A simple, basic cog."""
+class nsfw(app_commands.Group):  
     def __init__(self):
         super().__init__()
 
