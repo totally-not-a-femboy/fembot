@@ -54,8 +54,7 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
         if url is None:
             await ctx.send("Please provide a URL to shorten.")
             return
-        myobj = {'url': url}
-        x = requests.post("https://galactiko.net/api/redirects", json = myobj)
+        x = requests.post("https://galactiko.net/api/redirects", json = {'url': url})
         catjson = await x.json() 
         shurl = catjson['key']
         embed = discord.Embed(title="URL shortened", description=f"{url} has been shortened to {shurl}", color=discord.Color.purple())
@@ -382,15 +381,6 @@ class msc(commands.Cog):  # All cogs must inherit from commands.Cog
         except ValueError:
             await ctx.send("Unexpected error")
         await ctx.send(embed=self.embed, view=self.view)
-
-    @commands.command()
-    async def timediff(self, ctx: commands.Context, id2):
-        id1=ctx.message.id
-        time1 = discord.utils.snowflake_time(int(id1))
-        time2 = discord.utils.snowflake_time(int(id2))
-        ts_diff = time2 - time1
-        secs = abs(ts_diff.total_seconds())
-        await ctx.send(secs)
 
 async def setup(bot):
     await bot.add_cog(msc(bot))
