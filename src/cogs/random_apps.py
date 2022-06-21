@@ -7,21 +7,6 @@ import aiohttp
 import random as aaaaa
 import requests
 from bs4 import BeautifulSoup
-def get_facts():
-    """Scrapers the website and extracts image URLs
-    Returns:
-        imgs [list]: List of image URLs
-    """
-    url = 'https://es.memedroid.com/user/view/Datos_Curiosos'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'lxml')
-    divs = soup.find_all('div', class_='item-aux-container')
-    imgs = []
-    for div in divs:
-        img = div.find('img')['src']
-        if img.startswith('http') and img.endswith('jpeg'):
-            imgs.append(img)
-    return imgs
 
 class random(app_commands.Group):
     def __init__(self):
@@ -133,15 +118,5 @@ class random(app_commands.Group):
         embed.set_image(url='https://assets.puzzlefactory.pl/puzzle/349/392/original.jpg')
         await interaction.response.send_message(embed=embed)
     
-    @app_commands.command()
-    async def fact(self, interaction: discord.Interaction):
-        view = discord.ui.View() # Establish an instance of the discord.ui.View class
-        style = discord.ButtonStyle.gray  # The button will be gray in color
-        item = discord.ui.Button(style=style, label="Source", url="https://es.memedroid.com/user/view/Datos_Curiosos")  # Create an item to pass into the view class.
-        view.add_item(item=item)  # Add that item into the view class
-        embed = discord.Embed(color=discord.Color.purple()) 
-        embed.set_image(url=aaaaa.choice(get_facts()))   
-        await interaction.response.send_message(embed=embed, view=view)
-
 async def setup(bot):
     bot.tree.add_command(random())
