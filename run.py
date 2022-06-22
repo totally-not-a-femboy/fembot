@@ -47,7 +47,6 @@ intents = discord.Intents.default()
 intents.members = True
 intents.presences = False
 intents.message_content = True
-logs_channel = None
 uwu = commands.Bot(command_prefix=when_mentioned_or_function(get_prefix), intents = intents)
 tree = uwu.tree
 uwu.remove_command("help")
@@ -126,7 +125,7 @@ async def on_guild_remove(guild):
 #Message listeners
 @uwu.listen()
 async def on_message(message):
-    await AntiScam(message, bot = uwu, whitelist = whitelist, muted_role='Muted', logs_channel=logs_channel)
+    await AntiScam(message, bot = uwu, whitelist = whitelist, muted_role='Muted')
 
 @uwu.event
 async def on_message(message: discord.Message):
@@ -136,6 +135,8 @@ async def on_message(message: discord.Message):
          prefixes = json.load(f)
         prefix = prefixes.get(str(message.guild.id))
         await message.channel.send(f"Mi prefix en este servidor es `{prefix}` \n Escribe `{prefix}help` para ver los comandos")
+
+    await uwu.process_commands(message)
 
 uwu.sniped_messages = {}
 @uwu.event
