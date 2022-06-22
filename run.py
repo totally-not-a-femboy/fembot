@@ -2,6 +2,7 @@ import io
 import json
 import random
 from typing import Optional
+import requests
 import aiohttp
 import discord
 from discord.ext import commands
@@ -231,6 +232,15 @@ def cooldown_for_everyone_but_me(interaction: discord.Interaction) -> Optional[d
     if interaction.user.id == 915329928390639648:
         return None
     return discord.app_commands.Cooldown(per=30, rate=5)
+
+@tree.command(name="ping", description="Get the bot's ping")
+async def ping(interaction: discord.Interaction):
+    x = requests.get("https://galactiko.net/api/v1/ping")
+    q = x.json()["ping"]
+    embed = discord.Embed(title="🏓 Pong!")
+    embed.add_field(name="Discord API", value=f"{interaction.client.latency * 1000:.0f}ms")
+    embed.add_field(name="Galactiko.net API", value=f"{q} seconds")
+    await interaction.response.send_message(embed=embed)
 
 @tree.command()
 @discord.app_commands.describe(member='member to impersonate')
