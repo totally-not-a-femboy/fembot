@@ -1,5 +1,4 @@
-# Fembot - Development branch
-## ⚠️ Some features may not work properly
+# Fembot 
 
 A bad discord bot made with discord.py 2.0
 
