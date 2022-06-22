@@ -2,6 +2,7 @@
 
 A bad discord bot made with discord.py 2.0
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ggalactiko/fembot)
     
 ## Use an existing one
 [Invite to your server](https://galactiko.net/invite)
