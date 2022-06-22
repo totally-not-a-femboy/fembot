@@ -32,6 +32,8 @@ class VCError(commands.CommandError):
 class InvalidVC(VCError):
     """Exception for when a user tries to use a command while in an invalid VC"""
 
+class YTDLError(Exception):
+    pass
 
 class YTDLSource(discord.PCMVolumeTransformer):
 
@@ -309,6 +311,38 @@ class music(commands.GroupCog):
         embed.set_footer(text="❓ Puedes usar /stop para patearme en cualquier momento.")
         await ctx.send(embed=embed)
 
+    @commands.hybrid_command(name="loop")
+    async def loop(self, ctx: commands.Context):
+        """
+        🎵 Loops the current song.
+        Usage:
+        ```
+        ~loop
+        ```
+        """
+        vc = ctx.voice_client
+
+        if not vc or not vc.is_connected():
+            return await ctx.reply(
+                f":x: No estoy reproduciendo nada.", delete_after=20
+            )
+
+        player = self.get_player(ctx)
+    
+        if not player.current:
+            return await ctx.reply(
+                f":x: No estoy reproduciendo nada.", delete_after=20
+            )
+
+        if not player.current.looping:
+            player.current.looping = True
+            await ctx.send(f":white_check_mark: **{player.current.title}** se está repitiendo.")
+    
+        else:
+            player.current.looping = False
+            await ctx.send(f":x: **{player.current.title}** no se está repitiendo.")
+
+
     @commands.hybrid_command(name="play", aliases=["p"])
     async def play(self, ctx: commands.Context, search: str):
         """
@@ -331,9 +365,12 @@ class music(commands.GroupCog):
                 await ctx.invoke(self.connect)
 
             player = self.get_player(ctx)
-            source = await YTDLSource.create_source(
-                ctx, search, loop=self.bot.loop, download=False
-            )
+            try:
+                source = await YTDLSource.create_source(
+                    ctx, search, loop=self.bot.loop, download=False
+                )
+            except YTDLError as ex:
+                await ctx.send(f"Error:{str(ex)}")
 
             await player.queue.put(source)
 
