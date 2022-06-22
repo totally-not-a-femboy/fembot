@@ -1,7 +1,6 @@
 import asyncio
 import io
 import json
-from select import select
 import requests
 import discord
 import aiohttp
