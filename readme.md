@@ -2,12 +2,12 @@
 
 A bad discord bot made with discord.py 2.0
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ggalactiko/fembot)
     
 ## Use an existing one
 [Invite to your server](https://galactiko.net/invite)
 
 ## Usage
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ggalactiko/fembot)
 
 First, you need to create a bot token in the [Discord Developer Portal.](https://discordapp.com/developers/applications/me)
 
