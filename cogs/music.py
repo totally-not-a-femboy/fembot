@@ -161,13 +161,12 @@ class MusicPlayer:
         """
         return self.bot.loop.create_task(self._cog.cleanup(guild))
 class music(commands.GroupCog):
-    """
-    🎵 Contains music commands.
-    """
+
     __slots__ = ("bot", "players")
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.players = {}
+
     async def cleanup(self, guild):
         """
         Destroys the music player and disconnects from a voice channel.
@@ -180,6 +179,7 @@ class music(commands.GroupCog):
             del self.players[guild.id]
         except KeyError:
             pass
+
     async def __local_check(self, ctx: commands.Context):
         """
         Local check for all the commands in the cog.
@@ -187,6 +187,7 @@ class music(commands.GroupCog):
         if not ctx.guild:
             raise commands.NoPrivateMessage
         return True
+
     async def __error(self, ctx: commands.Context, error):
         """
         Error handler for all errors in this cog.
@@ -205,6 +206,7 @@ class music(commands.GroupCog):
                 + "Please make sure you're in a VC or provide me with one.",
                 delete_after=20,
             )
+
     def get_player(self, ctx: commands.Context):
         """
         Gets the guild player or makes a new one.
@@ -215,14 +217,11 @@ class music(commands.GroupCog):
             player = MusicPlayer(ctx)
             self.players[ctx.guild.id] = player
         return player
+
     @commands.hybrid_command(name="connect", aliases=["join"])
     async def connect(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         """
         🎵 Joins a voice channel.
-        Usage:
-        ```
-        ~join [channel]
-        ```
         """
         if not channel:
             try:
@@ -252,44 +251,12 @@ class music(commands.GroupCog):
             title=f"🎧 Conectado con éxito", description=f"```🎶 Canal: {channel}```"
         )
         embed.set_footer(text="❓ Puedes usar /stop para patearme en cualquier momento.")
-        await ctx.send(embed=embed)
         await ctx.send(embed=embed, delete_after=5)
 
-    @commands.hybrid_command(name="loop")
-    async def loop(self, ctx: commands.Context):
-        """
-        🎵 Loops the current song.
-        Usage:
-        ```
-        ~loop
-        ```
-        """
-        vc = ctx.voice_client
-        if not vc or not vc.is_connected():
-            return await ctx.reply(
-                f":x: No estoy reproduciendo nada.", delete_after=20
-            )
-        player = self.get_player(ctx)
-    
-        if not player.current:
-            return await ctx.reply(
-                f":x: No estoy reproduciendo nada.", delete_after=20
-            )
-        if not player.current.looping:
-            player.current.looping = True
-            await ctx.send(f":white_check_mark: **{player.current.title}** se está repitiendo.")
-    
-        else:
-            player.current.looping = False
-            await ctx.send(f":x: **{player.current.title}** no se está repitiendo.")
     @commands.hybrid_command(name="play", aliases=["p"])
     async def play(self, ctx: commands.Context, search: str):
         """
         🎵 Plays a song in a voice channel.
-        Usage:
-        ```
-        ~play | ~p <song>
-        ```
         """
         async with ctx.typing():
             if not search:
@@ -308,14 +275,11 @@ class music(commands.GroupCog):
             except YTDLError as ex:
                 await ctx.send(f"Error:{str(ex)}")
             await player.queue.put(source)
+
     @commands.hybrid_command(name="pause", aliases=["ps"])
     async def pause(self, ctx: commands.Context):
         """
         🎵 Pauses the currently playing song.
-        Usage:
-        ```
-        ~pause | ~ps
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_playing():
@@ -331,14 +295,11 @@ class music(commands.GroupCog):
             description=f"⏸️ Pausada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="resume",aliases=["r"])
     async def resume(self, ctx: commands.Context):
         """
         🎵 Resumes the currently playing song.
-        Usage:
-        ```
-        ~resume | ~r
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -354,14 +315,11 @@ class music(commands.GroupCog):
             description=f"▶️ Reanudada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="skip", aliases=["s"])
     async def skip(self, ctx: commands.Context):
         """
         🎵 Skips the currently playing song.
-        Usage:
-        ```
-        ~skip | ~s
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -379,14 +337,11 @@ class music(commands.GroupCog):
             description=f"⏭️ Saltada por **{ctx.author.name}**",
         )
         await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="queue", aliases=["q", "songs"])
     async def queue(self, ctx: commands.Context):
         """
         🎵 Shows the current music queue.
-        Usage:
-        ```
-        ~queue | ~q | ~songs
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -408,14 +363,11 @@ class music(commands.GroupCog):
         )
         embed.set_footer(text=f"❓ Puede usar /skip para saltar a la canción en la parte superior.")
         await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="nowplaying",aliases=["np"])
     async def nowplaying(self, ctx: commands.Context):
         """
         🎵 Shows the song that's currently playing.
-        Usage:
-        ```
-        ~nowplaying | ~np
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -438,14 +390,11 @@ class music(commands.GroupCog):
         embed.set_author(name=f"Ahora suena", icon_url=f"https://c.tenor.com/B-pEg3SWo7kAAAAC/disk.gif")
         embed.set_footer(text=f"Requested by: {vc.source.requester.name}")
         player.np = await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="volume", aliases=["vol"])
     async def volume(self, ctx: commands.Context, *, vol: float):
         """
         🎵 Changes the music player's volume.
-        Usage:
-        ```
-        ~volume | ~vol <volume>
-        ```
         """
         vc: discord.VoiceProtocol = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -464,14 +413,11 @@ class music(commands.GroupCog):
             description=f"🔊 **{ctx.author.name}**: Ajustó el volumen a  *{vol}%*",
         )
         await ctx.send(embed=embed)
+
     @commands.hybrid_command(name="stop",aliases=["del"])
     async def stop(self, ctx: commands.Context):
         """
         🎵 Clears the queue and stops the music player.
-        Usage:
-        ```
-        ~stop | ~del
-        ```
         """
         vc = ctx.voice_client
         if not vc or not vc.is_connected():
@@ -481,5 +427,6 @@ class music(commands.GroupCog):
             )
         await self.cleanup(ctx.guild)
         await ctx.send(f":x: **{ctx.author.name}**, se ha detenido la música.")
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(music(bot))
