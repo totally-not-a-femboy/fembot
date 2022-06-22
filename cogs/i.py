@@ -18,7 +18,7 @@ class inter(commands.Cog):  # All cogs must inherit from commands.Cog
         embed = discord.Embed(title="", color=discord.Color.green()) 
         embed.set_image(url=hugjson['link']) 
         await ctx.send(f"{ctx.author.mention} abrazó a {member.mention}") 
-        await ctx.send(embed=embed) 
+        await ctx.send(embed=embed)
 
     @commands.command(name='pat')
     async def pat(self, ctx: commands.Context, member: discord.Member):
