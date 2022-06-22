@@ -95,5 +95,18 @@ class utils(app_commands.Group):
             await new_channel.edit(position=channel_position, sync_permissions=True)
             await interaction.response.send_message(embed=embed1, ephemeral=True)
 
+    @app_commands.command(name="say")
+    @app_commands.describe(text="Mensaje que se enviará")
+    async def say(self, interaction:discord.Interaction, text: str):
+        if "@here" in text:
+            await interaction.response.send_message("No puedes usar @here", ephemeral=True)
+            return
+        if "@everyone" in text:
+            await interaction.response.send_message("No puedes usar @everyone", ephemeral=True)
+            return
+        else:
+            await interaction.response.send_message(f"{text} \n\n-{interaction.user}")
+            return
+    
 async def setup(bot):
     bot.tree.add_command(utils())
