@@ -311,37 +311,6 @@ class music(commands.GroupCog):
         embed.set_footer(text="❓ Puedes usar /stop para patearme en cualquier momento.")
         await ctx.send(embed=embed, delete_after=5)
 
-    @commands.hybrid_command(name="loop")
-    async def loop(self, ctx: commands.Context):
-        """
-        🎵 Loops the current song.
-        Usage:
-        ```
-        ~loop
-        ```
-        """
-        vc = ctx.voice_client
-
-        if not vc or not vc.is_connected():
-            return await ctx.reply(
-                f":x: No estoy reproduciendo nada.", delete_after=20
-            )
-
-        player = self.get_player(ctx)
-    
-        if not player.current:
-            return await ctx.reply(
-                f":x: No estoy reproduciendo nada.", delete_after=20
-            )
-
-        if not player.current.looping:
-            player.current.looping = True
-            await ctx.send(f":white_check_mark: **{player.current.title}** se está repitiendo.")
-    
-        else:
-            player.current.looping = False
-            await ctx.send(f":x: **{player.current.title}** no se está repitiendo.")
-
 
     @commands.hybrid_command(name="play", aliases=["p"])
     async def play(self, ctx: commands.Context, search: str):
