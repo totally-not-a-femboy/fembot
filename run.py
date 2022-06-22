@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-default_prefix = os.getenv("default_prefix")
+default_prefix = os.getenv("default_prefix") or "!"
 async def load_extensions():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
