@@ -98,7 +98,7 @@ async def on_ready():
 
 @uwu.event
 async def on_guild_join(guild: discord.Guild):
-    prefix = default_prefix or ">"
+    prefix = default_prefix
     with open('prefixes.json', 'r') as f: 
         prefixes = json.load(f) 
 
@@ -134,6 +134,7 @@ async def on_message(message: discord.Message):
         with open("prefixes.json", "r") as f:
          prefixes = json.load(f)
         prefix = prefixes.get(str(message.guild.id))
+        prefix = prefix or default_prefix
         await message.channel.send(f"Mi prefix en este servidor es `{prefix}` \n Escribe `{prefix}help` para ver los comandos")
 
 uwu.sniped_messages = {}
