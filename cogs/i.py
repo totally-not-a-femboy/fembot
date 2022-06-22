@@ -19,7 +19,7 @@ class inter(commands.Cog):  # All cogs must inherit from commands.Cog
             async with aiohttp.ClientSession() as session:
                 request = await session.get('https://some-random-api.ml/animu/hug')
                 hugjson = await request.json() 
-            embed = discord.Embed(title=f"{ctx.author.mention} abrazó a {member.mention}", color=discord.Color.green()) 
+            embed = discord.Embed(title=f"{ctx.author.name} abrazó a {member.name}", color=discord.Color.green()) 
             embed.set_image(url=hugjson['link']) 
             await ctx.send(embed=embed)
 
@@ -33,7 +33,7 @@ class inter(commands.Cog):  # All cogs must inherit from commands.Cog
             async with aiohttp.ClientSession() as session:
                 request = await session.get('https://some-random-api.ml/animu/pat')
                 patjson = await request.json() 
-            embed = discord.Embed(title=f"{ctx.author.mention} acarició a {member.mention}", color=discord.Color.green()) 
+            embed = discord.Embed(title=f"{ctx.author.name} acarició a {member.name}", color=discord.Color.green()) 
             embed.set_image(url=patjson['link']) 
             await ctx.send(embed=embed) 
 
@@ -42,7 +42,7 @@ class inter(commands.Cog):  # All cogs must inherit from commands.Cog
      async with aiohttp.ClientSession() as session:
       request = await session.get('https://some-random-api.ml/animu/wink')
       winkjson = await request.json() 
-     embed = discord.Embed(title=f"{ctx.author.mention} guiñó el ojo", color=discord.Color.green()) 
+     embed = discord.Embed(title=f"{ctx.author.name} guiñó el ojo", color=discord.Color.green()) 
      embed.set_image(url=winkjson['link']) 
      await ctx.send(embed=embed) 
 
