@@ -6,6 +6,8 @@ A bad discord bot made with discord.py 2.0
 ## Use an existing one
 [Invite to your server](https://galactiko.net/invite)
 
+## ⚠️ Some features may not work properly
+
 ## Usage
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ggalactiko/fembot)
 
