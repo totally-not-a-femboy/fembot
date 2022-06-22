@@ -136,8 +136,6 @@ async def on_message(message: discord.Message):
         prefix = prefixes.get(str(message.guild.id))
         await message.channel.send(f"Mi prefix en este servidor es `{prefix}` \n Escribe `{prefix}help` para ver los comandos")
 
-    await uwu.process_commands(message)
-
 uwu.sniped_messages = {}
 @uwu.event
 async def on_message_delete(message: discord.Message):
