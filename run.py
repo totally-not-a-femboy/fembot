@@ -238,7 +238,7 @@ async def ping(interaction: discord.Interaction):
     x = requests.get("https://galactiko.net/api/v1/ping")
     q = x.json()["ping"]
     embed = discord.Embed(title="🏓 Pong!")
-    embed.add_field(name="Discord API", value=f"{interaction.client.latency * 1000:.0f}ms")
+    embed.add_field(name="Discord API", value=f"{interaction.client.latency * 1000}ms")
     embed.add_field(name="Galactiko.net API", value=f"{q} seconds")
     await interaction.response.send_message(embed=embed)
 
