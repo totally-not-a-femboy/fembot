@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
+default_prefix = os.getenv("default_prefix")
 async def load_extensions():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -32,14 +33,14 @@ def when_mentioned_or_function(func):
 
 def get_prefix(client, message):
     if isinstance(message.channel, discord.DMChannel):
-        return ">"
+        return default_prefix
     else:
         try:
             with open("prefixes.json", "r") as f:
                 prefixes = json.load(f)
             return prefixes.get(str(message.guild.id))
         except:
-            return ">"
+            return default_prefix
 
 #configs
 whitelist = []
@@ -97,7 +98,6 @@ async def on_ready():
 
 @uwu.event
 async def on_guild_join(guild: discord.Guild):
-    default_prefix = os.getenv("default_prefix")
     prefix = default_prefix or ">"
     with open('prefixes.json', 'r') as f: 
         prefixes = json.load(f) 
