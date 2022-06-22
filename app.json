@@ -1,0 +1,38 @@
+{
+    "name": "Fembot",
+    "description": "Bot for discord",
+    "keywords": [
+        "discord",
+        "bot"
+    ],
+    "repository": "https://github.com/ggalactiko/fembot",
+    "website": "https://galactiko.net",
+    "env": {
+        "TOKEN": {
+            "description": "."
+        },
+        "default_prefix": {
+            "description": "Bot default prefix for new guilds",
+            "required": "False",
+            "value": "Heroku-Bot"
+        }
+    },
+    "stack": "heroku-20",
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        },
+        {
+            "url": "https://github.com/xrisk/heroku-opus.git"
+        },
+        {
+            "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+        }
+    ],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
