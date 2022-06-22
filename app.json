@@ -7,14 +7,16 @@
     ],
     "repository": "https://github.com/ggalactiko/fembot",
     "website": "https://galactiko.net",
+    
     "env": {
         "TOKEN": {
-            "description": "."
+            "description": "Bot's token",
+            "required": "True"
         },
         "default_prefix": {
             "description": "Bot default prefix for new guilds",
             "required": "False",
-            "value": "Heroku-Bot"
+            "value": ">"
         }
     },
     "stack": "heroku-20",
