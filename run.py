@@ -31,9 +31,15 @@ def when_mentioned_or_function(func):
     return inner
 
 def get_prefix(client, message):
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
-    return prefixes.get(str(message.guild.id))
+    if isinstance(message.channel, discord.DMChannel):
+        return ">"
+    else:
+        try:
+            with open("prefixes.json", "r") as f:
+                prefixes = json.load(f)
+            return prefixes.get(str(message.guild.id))
+        except:
+            return ">"
 
 #configs
 whitelist = []

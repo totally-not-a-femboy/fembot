@@ -1,10 +1,9 @@
+#Extracted from https://github.com/H3cJP/AntiScam
 import discord
 message_content = ''
 last_message = ''
 last_message_content = ''
 spam_counter = 0
-
-__version__ = "1.0.0"
 
 async def AntiScam(message: discord.Message, bot, whitelist, muted_role, logs_channel):
     global message_content, last_message, last_message_content, spam_counter
@@ -12,6 +11,9 @@ async def AntiScam(message: discord.Message, bot, whitelist, muted_role, logs_ch
     message_content = message_content.replace("'", "`")
     mentions = message.raw_mentions
     # AntiScam-System
+    if isinstance(message.channel, discord.DMChannel):
+        return
+
     if message.author.bot and message.author.public_flags == 65536:
         return
 
