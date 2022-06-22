@@ -309,7 +309,7 @@ class music(commands.GroupCog):
             title=f"🎧 Conectado con éxito", description=f"```🎶 Canal: {channel}```"
         )
         embed.set_footer(text="❓ Puedes usar /stop para patearme en cualquier momento.")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=5)
 
     @commands.hybrid_command(name="loop")
     async def loop(self, ctx: commands.Context):
