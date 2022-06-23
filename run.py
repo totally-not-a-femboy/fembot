@@ -2,6 +2,7 @@ import io
 import json
 import random
 from typing import Optional
+import requests
 import aiohttp
 import discord
 from discord.ext import commands
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
+default_prefix = os.getenv("default_prefix") or "!"
 async def load_extensions():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -31,9 +33,15 @@ def when_mentioned_or_function(func):
     return inner
 
 def get_prefix(client, message):
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
-    return prefixes.get(str(message.guild.id))
+    if isinstance(message.channel, discord.DMChannel):
+        return default_prefix
+    else:
+        try:
+            with open("prefixes.json", "r") as f:
+                prefixes = json.load(f)
+            return prefixes.get(str(message.guild.id))
+        except:
+            return default_prefix
 
 #configs
 whitelist = []
@@ -41,7 +49,6 @@ intents = discord.Intents.default()
 intents.members = True
 intents.presences = False
 intents.message_content = True
-logs_channel = None
 uwu = commands.Bot(command_prefix=when_mentioned_or_function(get_prefix), intents = intents)
 tree = uwu.tree
 uwu.remove_command("help")
@@ -92,8 +99,7 @@ async def on_ready():
 
 @uwu.event
 async def on_guild_join(guild: discord.Guild):
-    default_prefix = os.getenv("default_prefix")
-    prefix = default_prefix or ">"
+    prefix = default_prefix
     with open('prefixes.json', 'r') as f: 
         prefixes = json.load(f) 
 
@@ -120,7 +126,7 @@ async def on_guild_remove(guild):
 #Message listeners
 @uwu.listen()
 async def on_message(message):
-    await AntiScam(message, bot = uwu, whitelist = whitelist, muted_role='Muted', logs_channel=logs_channel)
+    await AntiScam(message, bot = uwu, whitelist = whitelist, muted_role='Muted')
 
 @uwu.event
 async def on_message(message: discord.Message):
@@ -129,6 +135,7 @@ async def on_message(message: discord.Message):
         with open("prefixes.json", "r") as f:
          prefixes = json.load(f)
         prefix = prefixes.get(str(message.guild.id))
+        prefix = prefix or default_prefix
         await message.channel.send(f"Mi prefix en este servidor es `{prefix}` \n Escribe `{prefix}help` para ver los comandos")
 
 uwu.sniped_messages = {}
@@ -225,6 +232,15 @@ def cooldown_for_everyone_but_me(interaction: discord.Interaction) -> Optional[d
     if interaction.user.id == 915329928390639648:
         return None
     return discord.app_commands.Cooldown(per=30, rate=5)
+
+@tree.command(name="ping", description="Get the bot's ping")
+async def ping(interaction: discord.Interaction):
+    x = requests.get("https://galactiko.net/api/v1/ping")
+    q = x.json()["ping"]
+    embed = discord.Embed(title="🏓 Pong!")
+    embed.add_field(name="Discord API", value=f"{interaction.client.latency * 1000}ms")
+    embed.add_field(name="Galactiko.net API", value=f"{q} seconds")
+    await interaction.response.send_message(embed=embed)
 
 @tree.command()
 @discord.app_commands.describe(member='member to impersonate')
